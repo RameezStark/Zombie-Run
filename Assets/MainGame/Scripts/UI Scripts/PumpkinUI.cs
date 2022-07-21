@@ -53,6 +53,13 @@ public class PumpkinUI : BasePopup
 
     public static Action PumpkinUpgradeUI;
 
+    public static Action<int> packageDeilvered;
+
+    [SerializeField]
+    Slider packageSlider;
+
+    int currentPackagesDelivered = 0;
+
     private void Start()
     {
         Close();
@@ -73,20 +80,27 @@ public class PumpkinUI : BasePopup
         nextBtn.onClick.AddListener(() => OnClickNext());
 
         upgradeBtn.onClick.RemoveAllListeners();
-        upgradeBtn.onClick.AddListener(() => { FarmManager.instance.ResetAllPumpkins(); });
-
-        
-        
+        upgradeBtn.onClick.AddListener(() => OnClickUpgrade());
+   
     }
 
     private void OnEnable()
     {
         PumpkinUpgradeUI += UpgradePumpkin;
+        packageDeilvered += AddPackagesDelivered;
     }
 
     private void OnDisable()
     {
         PumpkinUpgradeUI -= UpgradePumpkin;
+        packageDeilvered -= AddPackagesDelivered;
+    }
+
+    public void AddPackagesDelivered(int amount)
+    {
+        currentPackagesDelivered += amount; 
+
+        SetUpCurrentPumpkinDetails();
     }
 
     public void SetupUI()
@@ -103,6 +117,12 @@ public class PumpkinUI : BasePopup
 
         SetUpCurrentPumpkinDetails();
 
+    }
+
+    public void OnClickUpgrade()
+    {
+        FarmManager.instance.ResetAllPumpkins();
+        currentPackagesDelivered = 0;
     }
 
     public void SetUpCurrentPumpkinDetails()
@@ -170,25 +190,55 @@ public class PumpkinUI : BasePopup
         SetUpCurrentPumpkinDetails();
     }
 
+    public void PackageDeliveredSliderUpdate()
+    {
+        packageSlider.maxValue = PumpkinManager.instance.pumpkins[currentPumpkinOnDescriptionCount].packagesReq;
+        packageSlider.minValue = 0;
+
+        if (currentPumpkinOnDescriptionCount == currentPumpkinCount + 1)
+        {
+            packageSlider.value = currentPackagesDelivered;
+
+            if(packageSlider.value == packageSlider.maxValue)
+            {
+                upgradeBtn.interactable = true;
+            }
+        }
+
+        else if (currentPumpkinOnDescriptionCount < currentPumpkinCount + 1)
+        {
+            packageSlider.value = packageSlider.maxValue;
+            upgradeBtn.interactable = false;
+        }
+
+        else if (currentPumpkinOnDescriptionCount > currentPumpkinCount + 1)
+        {
+            packageSlider.value = packageSlider.minValue;
+            upgradeBtn.interactable = false;
+        }
+    }
+
     public void ManageUpgradeBtn()
     {
-        if(currentPumpkinOnDescriptionCount == currentPumpkinCount)
+        if(currentPumpkinOnDescriptionCount == currentPumpkinCount + 1)
         {
-            upgradeBtn.interactable = true;
+            upgradeBtn.interactable = false;
             upgradeBtnTxt.text = "Upgrade";
         }
 
-        else if(currentPumpkinOnDescriptionCount < currentPumpkinCount)
+        else if(currentPumpkinOnDescriptionCount < currentPumpkinCount + 1)
         {
             upgradeBtn.interactable = false;
             upgradeBtnTxt.text = "Unlocked";
         }
 
-        else if(currentPumpkinOnDescriptionCount > currentPumpkinCount)
+        else if(currentPumpkinOnDescriptionCount > currentPumpkinCount + 1)
         {
             upgradeBtn.interactable = false;
             upgradeBtnTxt.text = "Locked";
         }
+
+        PackageDeliveredSliderUpdate();
     }
 
 

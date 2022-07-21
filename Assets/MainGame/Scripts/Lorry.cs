@@ -113,6 +113,8 @@ public class Lorry : MonoBehaviour
 
         else if(lorryBackward)
         {
+            PumpkinUI.packageDeilvered?.Invoke(packagesInsideLorry);
+
             Vector3 direction = lorry.transform.position - lorryStartPos.transform.position;
             direction = direction.normalized;
 

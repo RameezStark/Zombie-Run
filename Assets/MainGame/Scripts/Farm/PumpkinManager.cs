@@ -7,6 +7,8 @@ public class PumpkinManager : MonoBehaviour
     public static PumpkinManager instance;
 
     public int currentPumpkinCount;
+
+    
     private void Awake()
     {
         instance = this;
@@ -25,4 +27,6 @@ public class pumpkin
     public GameObject pumkin;
     public Sprite pumpkinImg;
     public string description;
+    public int packagesReq;
+    public bool isUnlocked;
 }

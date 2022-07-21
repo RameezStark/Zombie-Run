@@ -13,7 +13,7 @@ public class PackageCollectorAndDispenser : MonoBehaviour
 
     bool isUnloadingWarehouse = false;
 
-    
+    public static int totalPumpkinsDelivered = 0;
 
     private void OnTriggerEnter(Collider other)
     {

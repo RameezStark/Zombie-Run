@@ -26,6 +26,7 @@ public class FarmManager : MonoBehaviour
         {
             farm.ResetFarm();
             farm.pumpkinPrefab = PumpkinManager.instance.pumpkins[currentPumpkinCount].pumkin;
+            PumpkinManager.instance.pumpkins[currentPumpkinCount].isUnlocked = true;
         }
 
         //farms[0].isUnlocked = true;
