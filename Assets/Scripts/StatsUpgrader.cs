@@ -8,18 +8,18 @@ public class StatsUpgrader : MonoBehaviour
     CapsuleCollider collector;
     public void increaseSpeed()
     {
-        PlayerStats.instance.playerSpeed += 10;
+        ForkliftStats.instance.speed += 10;
     }
 
     public void increaseCapacity()
     {
-        PlayerStats.instance.playerItemMaxCapacity += 10;
+        ForkliftStats.instance.capacity += 10;
     }
 
     public void increaseRadius()
     {
-        PlayerStats.instance.playerCollectCollider += 0.5f;
-        collector.radius = PlayerStats.instance.playerCollectCollider;
+        ForkliftStats.instance.collectSpeed += 0.5f;
+        collector.radius = ForkliftStats.instance.collectSpeed;
 
     }
 }
